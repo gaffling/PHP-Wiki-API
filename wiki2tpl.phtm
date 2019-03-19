@@ -1,0 +1,99 @@
+<?PHP /* 100 Lines */
+/*
+      http://myacquisitions.blogspot.com/2013/03/googles-favorite-colors-by-hex-codes.html 
+      https://logo.clearbit.com/ibm.com
+*/
+?>
+
+<title><?=$headline?></title>
+
+<style>
+  .wiki {
+    -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.01), 0 2px 3px 0 rgba(0,0,0,.1);
+    box-shadow: 0 0 0 1px rgba(0,0,0,.01), 0 2px 3px 0 rgba(0,0,0,.1);
+    padding: 2.5rem 2.5rem 2.4rem;
+    border: 1px solid #CCCCCC; /* COLOR */
+    max-width: 400px;
+  }
+  .wiki h1 {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 0 1px rgba(0,0,0,.1);
+    font-family: Arial,sans-serif;
+    letter-spacing: -.08rem;
+    font-weight: normal;
+    font-size: 1.7rem;
+    line-height: 1.2;
+    color: #222222; /* COLOR */
+    padding: 0;
+    margin: 0;
+  }
+  .wiki p {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 0 1px rgba(0,0,0,.1);
+    font-family: Arial,sans-serif;
+    margin: 1rem 0 0;
+    color: #222222; /* COLOR */
+    padding: 0;
+  }
+  .wiki ul li {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 0 1px rgba(0,0,0,.1);
+    font-family: Arial,sans-serif;
+    color: #222222; /* COLOR */
+    padding: 0;
+  }
+  .wiki .hint {
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 0 0 1px rgba(0,0,0,.1);
+    color: #DD4B39 ; /* COLOR */
+  }
+  .wiki hr {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    border-width: 0;
+    border-top: 1px solid WhiteSmoke;
+    margin: 1rem 0;
+    height: 0;
+  }
+  .wiki img {
+    margin: 0 0 .5rem 1rem;
+    max-height: 200px;
+    max-width: 200px;
+    float: right;
+  }
+  .wiki p small {
+    font-size: small;
+  }
+  .wiki a {
+    color: #1155cc; /* COLOR */
+  }
+  .wiki a:link {
+    color: #1155cc; /* COLOR */
+  }
+  .wiki a:hover {
+    text-decoration: none;
+  }
+  .wiki a:active {
+    color: #33aaff; /* COLOR */
+  }      
+  .wiki a:visited {
+    color: #6611CC; /* COLOR */
+  }
+  .wiki a:focus {
+    outline: 0;
+  }
+</style>
+
+<div class="wiki">
+  <h1><?=$headline?></h1>
+  <p><?=$description?></p>
+  <?=$footer!=''?'<hr>':''?>
+  <?=$image?>
+  <p><?=$text?></p>
+  <hr style="clear:both;">
+  <p>
+  <small>
+    <?=$footer?> <a target="_blank" href="<?=$url?>">Wikipedia</a>
+  </small>
+  </p>
+</div>
