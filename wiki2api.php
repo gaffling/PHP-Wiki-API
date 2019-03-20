@@ -217,7 +217,7 @@ class wiki
         $proxy = '';
         if ($this->params['imageProxy']==TRUE)
         {
-          $proxy = 'image_proxy.php?url=';
+          $proxy = 'wiki-image-proxy.php?url=';
         }
 
         // Build HTML for Image

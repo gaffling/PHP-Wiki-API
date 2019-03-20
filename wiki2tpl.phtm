@@ -1,8 +1,7 @@
-<?PHP /* 100 Lines */
-/*
-      http://myacquisitions.blogspot.com/2013/03/googles-favorite-colors-by-hex-codes.html 
-      https://logo.clearbit.com/ibm.com
-*/
+<?PHP /* 99 Lines */
+
+/* http://myacquisitions.blogspot.com/2013/03/googles-favorite-colors-by-hex-codes.html */
+
 ?>
 
 <title><?=$headline?></title>
