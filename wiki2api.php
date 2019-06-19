@@ -5,7 +5,7 @@
  * @package    PHP-Wiki-API
  * @copyright  Copyright (c) 2019 Igor Gaffling <pro@gaffling.com>
  * @license    https://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt  LGPL License
- * @version    Release: @1.0@
+ * @version    Release: @1.1@
  * @link       https://github.com/gaffling/PHP-Wiki-API
  * @since      Class available since Release 1.0
  *
@@ -256,14 +256,19 @@ class wiki
       }
 
       // If there is no Article Text set a Default depending on selected Language
-      // e.g. q=Leonardo%20di%20caprio&language=de
-      if ($text == '' && $this->params['language'] == 'de')
+      // e.g. q=Leonardo%20di%20caprio&language=de OR q=100&language=de
+      if ($text == '')
       {
-        $text = 'Zu diesem Stichwort ist kein Artikel vorhanden.';
-      }
-      else if($text == '')
-      {
-        $text = 'There is no article available for this keyword.';    
+        $description = $image = '';
+        if ($this->params['language'] == 'de')
+        {
+          $text = 'Zu diesem Stichwort ist kein Artikel vorhanden.';
+        }
+        else if($text == '')
+        {
+          $text = 'There is no article available for this keyword.';
+        }
+        return; // ONLY IF YOU WHANT NO OUTPUT !!
       }      
     }
 
