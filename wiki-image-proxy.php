@@ -1,27 +1,27 @@
-<?php /* 150 Lines */
+<?php /* 165 Lines */
 
-/*
-    Datenschutz-Proxy für Bilder
-    ----------------------------
-    Wieso sollte ein Proxy für die Ausgabe der Bilder verwendet werden?
-    Um der DSGVO gerecht zu werden, 
-    sollten Bilder von fremden Server über einen Datenschutz-Proxy 
-    ausgegeben werden.    
-    Bekanntlich werden die von der Wikipeda API bereitgestellten Bilder 
-    direkt von den Wikipedia-Servern ausgeliefert. Im Hinblick auf die 
-    Datenschutz-Grundverordnung ist dies jedoch problematisch, 
-    da Wikipedia dadurch Zugriff auf die IP-Adressen der Seitenbesucher hat.
-    Um das zu verhindern, kann dieser Datenschutz-Proxy genutzt werden, 
-    wodurch die Bilder über dieses PHP-Script abgerufen werden. 
-    Dadurch erhält Wikipedia lediglich Zugriff auf die IP des abrufenden
-    Webservers, und nicht die IP des Bild ansehenden Seitenbesuchers.
-    
-    Verwendung des Datenschutz-Proxy
-    Die Funktion muss in der Haupt-Klasse über die Einstellung
-    (“imageProxy” = true) aktiviert werden. 
-*/
+/**
+ * Privacy proxy for images
+ *
+ * USE: https://yourdomain.top/proxy.php?url=
+ *
+ * Why should a proxy be used for the output of the images?
+ * To comply with the DSGVO, 
+ * images from other servers should be outputed via a data protection proxy 
+ * As is well known, the images provided by the Wikipeda API are delivered
+ * directly from the Wikipedia servers. 
+ * In view of the data protection regulation, however, this is problematic, 
+ * as it gives Wikipedia access to the IP addresses of visitors to the site.
+ * To prevent this, this privacy proxy can be used, 
+ * which retrieves the images through this PHP script. 
+ * This only gives Wikipedia access to the IP of the requesting 
+ * web server, and not the IP of the page visitor viewing the image.
+ * 
+ * @see https://github.com/gaffling/PHP-Wiki-API/blob/master/wiki-image-proxy.php
+ *  
+ */
 
-# Check for url parameter
+// Check for url parameter
 $url = isset( $_GET['url'] ) ? $_GET['url'] : null;
 if (!isset($url) or preg_match('#^https?://#', $url) != 1)
 {
@@ -29,7 +29,7 @@ if (!isset($url) or preg_match('#^https?://#', $url) != 1)
   exit;
 }
 
-# Check if the client already has the requested item
+// Check if the client already has the requested item
 if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) or 
     isset($_SERVER['HTTP_IF_NONE_MATCH']))
 {
@@ -37,7 +37,10 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) or
     exit;
 }
 
-# Check if cURL exists, and if so: use it
+// Get File Extention from URL
+$ext = pathinfo(basename($url), PATHINFO_EXTENSION);
+
+// Check if cURL exists, and if so: use it
 if (function_exists('curl_version'))
 {
     $ch = curl_init();
@@ -53,9 +56,9 @@ if (function_exists('curl_version'))
     curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, 
       function($DownloadSize, $Downloaded, $UploadSize, $Uploaded)
       { 
-        return ($Downloaded > 1024 * 512) ? 1 : 0; 
+        return ($Downloaded > 1024 * 512) ? 1 : 0; /* max 512kb */
       }
-    ); // max 500kb
+    );
     $out = curl_exec ($ch);
     curl_close ($ch);
     
@@ -101,6 +104,10 @@ if (function_exists('curl_version'))
             }
             header('Content-Type: ' . $ct);
         }
+        else
+        {
+            header('Content-Type: image/' . $ext);
+        }
         if (array_key_exists('Content-Length', $headers))
         {
             header('Content-Length: ' . $headers['Content-Length']);
@@ -128,6 +135,7 @@ else // No cURL so use readfile()
     // Check if it's an image
     if ($imgInfo = @getimagesize( $url ))
     {
+        // Check mime
         if (preg_match('#image/png|image/.*icon|image/jpe?g|image/gif#', $imgInfo['mime']) !== 1)
         {
             header('HTTP/1.1 404 Not Found');
@@ -135,7 +143,14 @@ else // No cURL so use readfile()
         }
         
         // Output simple header
-        header( 'Content-type: ' . $imgInfo['mime'] );
+        if (isset($imgInfo['mime']) and !empty($imgInfo['mime']) )
+        {
+            header( 'Content-Type: ' . $imgInfo['mime'] );
+        }
+        else
+        {
+            header('Content-Type: image/' . $ext);
+        }
         
         // Output Image
         readfile( $url );
